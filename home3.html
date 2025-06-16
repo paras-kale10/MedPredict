@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MedPredict - Your Health Assistant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #28a745;
+      --secondary-color: #218838;
+      --light-bg: #f4f4f4;
+      --dark-bg: #121212;
+      --card-light: #ffffff;
+      --card-dark: #333333;
+      --text-light: #000000;
+      --text-dark: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-bg);
+      color: var(--text-light);
+      transition: background-color 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    body.dark-mode {
+      background-color: var(--dark-bg);
+      color: var(--text-dark);
+    }
+
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      border-radius: 10px;
+      margin: 20px;
+    }
+
+    .header h1 {
+      font-size: 3.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .header p {
+      font-size: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .header.dark-mode {
+      background: linear-gradient(135deg, #444444, #333333);
+    }
+
+    /* Login Button Top Right */
+    .login-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s;
+      z-index: 1000;
+    }
+
+    .login-btn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Dark Mode Button Bottom Right */
+    .dark-mode-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+
+    .dark-mode-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .features {
+      padding: 40px 20px 50px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      width: 400px;
+      padding: 30px;
+      background: var(--card-light);
+      border-radius: 15px;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      color: var(--text-light);
+      transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card h3 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 1.4rem;
+    }
+
+    .card h3 .text-icon {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      width: 24px;
+      display: inline-flex;
+      justify-content: center;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: var(--text-light);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    .card.dark-mode {
+      background-color: var(--card-dark);
+      color: var(--text-dark);
+    }
+
+    .card.dark-mode p {
+      color: var(--text-dark);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px 20px;
+      background: linear-gradient(135deg, var(--secondary-color), #1e7e34);
+      color: #fff;
+      border-radius: 10px;
+      margin: 40px 20px 20px;
+      margin-top: auto;
+    }
+
+    .footer.dark-mode {
+      background: linear-gradient(135deg, #222222, #111111);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Button -->
+  <button id="loginBtn" class="login-btn">Login</button>
+
+  <!-- Dark Mode Button -->
+  <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">
+    <span id="darkModeIcon">🌙</span>
+  </button>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <h1>MedPredict</h1>
+    <p>Your health assistant for predicting symptoms, medications, and cures.</p>
+  </header>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="card" onclick="redirectToPage('first-aid-guide.html')">
+      <i class="fas fa-first-aid card-icon"></i>
+      <div class="card-content">
+        <h3><i class="fas fa-medkit text-icon"></i> First-Aid Guide</h3>
+        <p>Quick first-aid tips to handle medical emergencies.</p>
+      </div>
+    </div>
+    <div class="card" onclick="redirectToPage('symptom-prediction.html')">
+      <i class="fas fa-stethoscope card-icon"></i>
+      <div class="card-content">
+        <h3><i class="fas fa-diagnoses text-icon"></i> Symptom Prediction</h3>
+        <p>Enter symptoms to get accurate health predictions.</p>
+      </div>
+    </div>
+    <div class="card" onclick="redirectToPage('preventive-measures.html')">
+      <i class="fas fa-shield-alt card-icon"></i>
+      <div class="card-content">
+        <h3><i class="fas fa-hands-wash text-icon"></i> Preventive Measures</h3>
+        <p>Learn how to prevent medical conditions effectively.</p>
+      </div>
+    </div>
+    <div class="card" onclick="redirectToPage('medicine-side-effects.html')">
+      <i class="fas fa-pills card-icon"></i>
+      <div class="card-content">
+        <h3><i class="fas fa-exclamation-triangle text-icon"></i> Medicine Side Effects</h3>
+        <p>Check potential side effects of medications.</p>
+      </div>
+    </div>
+    <div class="card" onclick="redirectToPage('medical-terminology.html')">
+      <i class="fas fa-book-medical card-icon"></i>
+      <div class="card-content">
+        <h3><i class="fas fa-book-medical text-icon"></i> Terminology Explainer</h3>
+        <p>Understand complex medical terms with ease.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    © 2025 MedPredict | All Rights Reserved.
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    const toggleBtn = document.getElementById("darkModeToggle");
+    const darkModeIcon = document.getElementById("darkModeIcon");
+    const header = document.getElementById("header");
+    const footer = document.getElementById("footer");
+    const cards = document.querySelectorAll(".card");
+    const loginBtn = document.getElementById("loginBtn");
+
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      header.classList.toggle("dark-mode");
+      footer.classList.toggle("dark-mode");
+      cards.forEach(card => card.classList.toggle("dark-mode"));
+      darkModeIcon.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    });
+
+    loginBtn.addEventListener("click", () => {
+      // Redirect to login page
+      window.location.href = "login.html";
+    });
+
+    function redirectToPage(page) {
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>
